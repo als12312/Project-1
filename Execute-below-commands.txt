@@ -1,5 +1,7 @@
 chmod +x user_management.sh
 
 ./user_management.sh --create newuser
+./user_management.sh --add existinguser
 ./user_management.sh --delete existinguser
-./user_management.sh --password existinguser
+./user_management.sh --modify existinguser
+
