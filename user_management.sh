@@ -4,11 +4,14 @@
 usage() {
     echo "Usage: $0 [options]"
     echo "Options:"
-    echo "  -c, --create <username>   Create a new user"
-    echo "  -a, --add <username>      Add an existing user"
-    echo "  -d, --delete <username>   Delete an existing user"
-    echo "  -m, --modify <username>   Modify an existing user"
-    echo "  -h, --help                Display this help message"
+    echo "  -c, --create-user <username>      Create a new user"
+    echo "  -a, --add-user <username>         Add an existing user"
+    echo "  -d, --delete-user <username>      Delete an existing user"
+    echo "  -m, --modify-user <username>      Modify an existing user"
+    echo "  -g, --create-group <groupname>    Create a new group"
+    echo "  -ga, --add-group <username> <groupname>  Add a user to a group"
+    echo "  -gd, --delete-group <groupname>   Delete an existing group"
+    echo "  -h, --help                         Display this help message"
 }
 
 # Function to create a new user
@@ -39,6 +42,28 @@ modify_user() {
     echo "User $username modified successfully."
 }
 
+# Function to create a new group
+create_group() {
+    groupname=$1
+    sudo groupadd $groupname
+    echo "Group $groupname created successfully."
+}
+
+# Function to add a user to a group
+add_to_group() {
+    username=$1
+    groupname=$2
+    sudo usermod -aG $groupname $username
+    echo "User $username added to group $groupname successfully."
+}
+
+# Function to delete an existing group
+delete_group() {
+    groupname=$1
+    sudo groupdel $groupname
+    echo "Group $groupname deleted successfully."
+}
+
 # Main script starts here
 if [ $# -eq 0 ]; then
     usage
@@ -47,20 +72,32 @@ fi
 
 while [ $# -gt 0 ]; do
     case "$1" in
-        -c|--create)
+        -c|--create-user)
             create_user $2
             shift 2
             ;;
-        -a|--add)
+        -a|--add-user)
             add_user $2
             shift 2
             ;;
-        -d|--delete)
+        -d|--delete-user)
             delete_user $2
             shift 2
             ;;
-        -m|--modify)
+        -m|--modify-user)
             modify_user $2
+            shift 2
+            ;;
+        -g|--create-group)
+            create_group $2
+            shift 2
+            ;;
+        -ga|--add-group)
+            add_to_group $2 $3
+            shift 3
+            ;;
+        -gd|--delete-group)
+            delete_group $2
             shift 2
             ;;
         -h|--help)
