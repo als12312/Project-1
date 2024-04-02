@@ -4,16 +4,24 @@
 usage() {
     echo "Usage: $0 [options]"
     echo "Options:"
-    echo "  -a, --add <username>      Add a new user"
+    echo "  -c, --create <username>   Create a new user"
+    echo "  -a, --add <username>      Add an existing user"
     echo "  -d, --delete <username>   Delete an existing user"
     echo "  -m, --modify <username>   Modify an existing user"
     echo "  -h, --help                Display this help message"
 }
 
-# Function to add a new user
+# Function to create a new user
+create_user() {
+    username=$1
+    sudo useradd -m $username
+    echo "User $username created successfully."
+}
+
+# Function to add an existing user
 add_user() {
     username=$1
-    sudo adduser $username
+    sudo usermod -aG sudo $username  # Example: adding user to sudo group
     echo "User $username added successfully."
 }
 
@@ -39,6 +47,10 @@ fi
 
 while [ $# -gt 0 ]; do
     case "$1" in
+        -c|--create)
+            create_user $2
+            shift 2
+            ;;
         -a|--add)
             add_user $2
             shift 2
