@@ -11,6 +11,7 @@ usage() {
     echo "  -g, --create-group <groupname>    Create a new group"
     echo "  -ga, --add-group <username> <groupname>  Add a user to a group"
     echo "  -gd, --delete-group <groupname>   Delete an existing group"
+    echo "  -b, --backup <directory>          Backup specified directory"
     echo "  -h, --help                         Display this help message"
 }
 
@@ -64,6 +65,15 @@ delete_group() {
     echo "Group $groupname deleted successfully."
 }
 
+# Function to backup a directory
+backup_directory() {
+    directory=$1
+    timestamp=$(date +"%Y%m%d_%H%M%S")
+    backup_filename="backup_${timestamp}.tar.gz"
+    tar -czvf $backup_filename $directory
+    echo "Backup of $directory created successfully: $backup_filename"
+}
+
 # Main script starts here
 if [ $# -eq 0 ]; then
     usage
@@ -98,6 +108,10 @@ while [ $# -gt 0 ]; do
             ;;
         -gd|--delete-group)
             delete_group $2
+            shift 2
+            ;;
+        -b|--backup)
+            backup_directory $2
             shift 2
             ;;
         -h|--help)
