@@ -5,3 +5,8 @@ chmod +x user_management.sh
 ./user_management.sh --delete existinguser
 ./user_management.sh --modify existinguser
 
+./user_management.sh --create-group newgroup
+./user_management.sh --add-group existinguser existinggroup
+./user_management.sh --delete-group existinggroup
+
+
