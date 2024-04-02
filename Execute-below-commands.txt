@@ -10,3 +10,6 @@ chmod +x user_management.sh
 ./user_management.sh --delete-group existinggroup
 
 
+./user_management.sh --backup /path/to/directory
+
+
